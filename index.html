@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manuel Macário — Dev & Tech Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --card: #16161f;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --accent3: #f59e0b;
+      --text: #e8e8f0;
+      --muted: #7070a0;
+      --border: #2a2a3a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* BACKGROUND GRID */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1rem;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+    }
+
+    .logo span { color: var(--accent2); }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav ul a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem 3rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      margin-bottom: 2rem;
+    }
+
+    h1 .line2 {
+      -webkit-text-stroke: 1px var(--accent);
+      color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 600px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    .hero-desc strong { color: var(--text); }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 2rem;
+      background: var(--accent);
+      color: #000;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,229,255,0.4);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 2rem;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    /* FLOATING BADGE */
+    .hero-badge {
+      position: absolute;
+      right: 3rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 220px;
+      height: 220px;
+      border: 1px solid var(--accent2);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      background: rgba(124,58,237,0.08);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(124,58,237,0.3); }
+      50% { box-shadow: 0 0 0 20px rgba(124,58,237,0); }
+    }
+
+    .hero-badge .name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--accent2);
+      margin-bottom: 0.3rem;
+    }
+
+    .hero-badge .role {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .hero-badge .phone {
+      margin-top: 1rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+    }
+
+    /* STATS */
+    .stats {
+      position: relative;
+      z-index: 1;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem;
+    }
+
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.04em;
+    }
+
+    .stat-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+
+    /* COURSES */
+    .section {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 3rem;
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent3);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 3rem;
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .course-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+    }
+
+    .course-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .course-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .course-card:hover::before { opacity: 1; }
+
+    .course-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .course-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 0.7rem;
+    }
+
+    .course-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .course-tag {
+      display: inline-block;
+      margin-top: 1.2rem;
+      padding: 0.3rem 0.8rem;
+      background: rgba(0,229,255,0.08);
+      border: 1px solid rgba(0,229,255,0.2);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* VIP GROUP */
+    .vip-section {
+      position: relative;
+      z-index: 1;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .vip-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .vip-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.5rem;
+    }
+
+    .vip-title span {
+      color: var(--accent3);
+    }
+
+    .vip-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .vip-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .vip-list li::before {
+      content: '→';
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+
+    .vip-card {
+      background: var(--card);
+      border: 1px solid var(--accent3);
+      padding: 3rem;
+      text-align: center;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    }
+
+    .vip-card-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent3);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .vip-card h3 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 0.8rem 1.2rem;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+    }
+
+    .contact-row .icon { font-size: 1.2rem; }
+    .contact-row .label { color: var(--muted); font-size: 0.65rem; }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 3rem;
+      border-top: 1px solid var(--border);
+    }
+
+    footer p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    footer p span { color: var(--accent); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero > * {
+      animation: fadeUp 0.8s ease backwards;
+    }
+
+    .hero > *:nth-child(1) { animation-delay: 0.1s; }
+    .hero > *:nth-child(2) { animation-delay: 0.2s; }
+    .hero > *:nth-child(3) { animation-delay: 0.3s; }
+    .hero > *:nth-child(4) { animation-delay: 0.4s; }
+
+    /* TERMINAL EFFECT */
+    .terminal {
+      font-family: 'Space Mono', monospace;
+      background: #000;
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      color: #0f0;
+      line-height: 1.8;
+      max-width: 500px;
+      margin-bottom: 2rem;
+    }
+
+    .terminal .prompt { color: var(--accent2); }
+    .terminal .output { color: var(--muted); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { display: none; }
+      .hero { padding: 5rem 1.5rem 3rem; }
+      .hero-badge { display: none; }
+      .section { padding: 4rem 1.5rem; }
+      .vip-inner { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 1.5rem; }
+      .stats { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">MM<span>.</span>DEV</div>
+    <ul>
+      <li><a href="#cursos">Cursos</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#grupo">Grupo VIP</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag">Tecnologia & Programação</div>
+    <h1>
+      Aprende a<br>
+      <span class="line2">Construir</span><br>
+      o Futuro
+    </h1>
+    <p class="hero-desc">
+      Domina <strong>chatbots, aplicações móveis, websites</strong> e muito mais. 
+      Formação prática orientada por Manuel Macário — desenvolvedor e mentor com experiência real no digital.
+    </p>
+    <div class="hero-btns">
+      <a href="#cursos" class="btn-primary">Ver Cursos</a>
+      <a href="https://chat.whatsapp.com/EPOa1YPoGvFH8TA8L4kbHX?mode=gi_t" target="_blank" class="btn-secondary">Entrar no Grupo VIP</a>
+    </div>
+
+    <div class="hero-badge">
+      <div class="name">Manuel Macário</div>
+      <div class="role">Dev & Tech Mentor</div>
+      <div class="phone">📱 850 267 268</div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stats-inner">
+      <div>
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Alunos Formados</div>
+      </div>
+      <div>
+        <div class="stat-num">10+</div>
+        <div class="stat-label">Cursos Disponíveis</div>
+      </div>
+      <div>
+        <div class="stat-num">5★</div>
+        <div class="stat-label">Avaliação Média</div>
+      </div>
+      <div>
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Suporte no Grupo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CURSOS -->
+  <section class="section" id="cursos">
+    <div class="section-label">O que vais aprender</div>
+    <h2>Cursos & Conteúdos</h2>
+
+    <div class="courses-grid">
+      <div class="course-card">
+        <div class="course-icon">🤖</div>
+        <div class="course-title">Criação de Chatbots</div>
+        <div class="course-desc">Constrói chatbots inteligentes do zero usando ferramentas modernas como n8n, Botpress e integração com IA.</div>
+        <span class="course-tag">IA & Automação</span>
+      </div>
+
+      <div class="course-card">
+        <div class="course-icon">📱</div>
+        <div class="course-title">Desenvolvimento de Apps</div>
+        <div class="course-desc">Cria aplicações mobile funcionais com React Native e Flutter, para Android e iOS, sem complicações.</div>
+        <span class="course-tag">Mobile Dev</span>
+      </div>
+
+      <div class="course-card">
+        <div class="course-icon">🌐</div>
+        <div class="course-title">Criação de Websites</div>
+        <div class="course-desc">HTML, CSS, JavaScript e frameworks modernos. Aprende a criar sites profissionais e responsivos.</div>
+        <span class="course-tag">Web Dev</span>
+      </div>
+
+      <div class="course-card">
+        <div class="course-icon">⚙️</div>
+        <div class="course-title">Automação Digital</div>
+        <div class="course-desc">Automatiza tarefas repetitivas com Zapier, Make e scripts Python. Poupa horas de trabalho manual.</div>
+        <span class="course-tag">Automação</span>
+      </div>
+
+      <div class="course-card">
+        <div class="course-icon">🗄️</div>
+        <div class="course-title">Bases de Dados</div>
+        <div class="course-desc">Aprende MySQL, Firebase e MongoDB. Armazena e gere dados de forma eficiente nas tuas aplicações.</div>
+        <span class="course-tag">Backend</span>
+      </div>
+
+      <div class="course-card">
+        <div class="course-icon">💡</div>
+        <div class="course-title">APIs & Integrações</div>
+        <div class="course-desc">Conecta serviços externos, trabalha com APIs REST e cria integrações poderosas entre plataformas.</div>
+        <span class="course-tag">API Dev</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIP GROUP -->
+  <section class="vip-section" id="grupo">
+    <div class="vip-inner">
+      <div>
+        <div class="section-label">Comunidade Exclusiva</div>
+        <h2 class="vip-title">Entra no<br><span>Grupo VIP</span></h2>
+        <ul class="vip-list">
+          <li>Acesso a tutoriais exclusivos e projetos práticos</li>
+          <li>Suporte direto com Manuel Macário e a comunidade</li>
+          <li>Materiais actualizados sobre as últimas tecnologias</li>
+          <li>Networking com outros programadores e criadores</li>
+          <li>Aulas ao vivo e sessões de perguntas e respostas</li>
+          <li>Templates e recursos prontos a usar</li>
+        </ul>
+        <div class="terminal">
+          <div><span class="prompt">$</span> Programação não é um talento.</div>
+          <div class="output">É uma habilidade que qualquer um pode aprender.</div>
+          <div><span class="prompt">$</span> Começa hoje.</div>
+          <div class="output">_ <span style="animation: blink 1s infinite">▊</span></div>
+        </div>
+      </div>
+
+      <div class="vip-card" id="contacto">
+        <div class="vip-card-title">Fala Connosco</div>
+        <h3>Entra em Contacto</h3>
+        <div class="contact-info">
+          <div class="contact-row">
+            <span class="icon">📱</span>
+            <div>
+              <div class="label">TELEFONE / WHATSAPP</div>
+              <div><strong>850 267 268</strong></div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <span class="icon">👤</span>
+            <div>
+              <div class="label">MENTOR</div>
+              <div><strong>Manuel Macário</strong></div>
+            </div>
+          </div>
+        </div>
+        <a href="https://chat.whatsapp.com/EPOa1YPoGvFH8TA8L4kbHX?mode=gi_t" target="_blank" class="btn-primary" style="display:block; text-align:center; margin-bottom:1rem;">
+          💬 Entrar no Grupo VIP
+        </a>
+        <a href="tel:850267268" class="btn-secondary" style="display:block; text-align:center;">
+          📞 Ligar Agora
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 <span>Manuel Macário Dev Academy</span> — Moçambique 🇲🇿 &nbsp;|&nbsp; Todos os direitos reservados</p>
+  </footer>
+
+  <style>
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
+</body>
+</html>
